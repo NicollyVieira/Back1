@@ -20,27 +20,59 @@ import { error } from "console";
 //2) tratamento de erros, função para tratar os erros
 
     function trataErro(erro){
-        throw new Error(chalk.red(erro.code,"Não há arquivo no diretório!!!!!!!!!!!"));
+       console.log (erro);
+       throw new Error(chalk.red(erro.code,"Não há arquivo no diretório!"));
     }
 
 
 
 // 1) Escrever uma function que traga arquivos .md
 
-    function pegaArquivo(caminhoDoArquivo){
-    const encoding="utf-8";
-    fs.readFile(caminhoDoArquivo,encoding,(erro,texto)=>{
-        if(erro){
-            trataErro(erro)
+//     function pegaArquivo(caminhoDoArquivo){
+//     const encoding="utf-8";
+//     fs.readFile(caminhoDoArquivo,encoding,(erro,texto)=>{
+//         if(erro){
+//             trataErro(erro)
+//         }
+//         console.log(chalk.green(texto));
+//     })
+// }
+//         pegaArquivo('./arquivos/texto.md');
+
+      //Exemplo para testar a function "trataErro"
+    //pegaArquivo('./arquivos/');
+
+     //forma correta.
+    // pegaArquivo('./arquivos/texto.md');
+        
+    //callback(erro,texto)
+
+    // Aula sobre promessas--- inserir método assincrono em nosso código
+
+    //1)Reescrevendo (Refatorando)
+
+        // function pegaArquivo(caminhoDoArquivo){
+        //     const encoding='utf-8';    
+        //     fs.promises.readFile(caminhoDoArquivo,encoding).then((texto)=>console.log(chalk.blue(texto))).catch((erro)=>trataErro(erro))
+        // }
+        // pegaArquivo('./arquivos/texto.md');
+
+        // Usando outra forma de solucionar as promessas (async/await)
+
+        
+        async function pegaArquivo(caminhoDoArquivo){
+            try {
+            const encoding='utf-8';    
+            const texto= await fs.promises.readFile(caminhoDoArquivo,encoding);
+            console.log(chalk.blue(texto));
+
+               } catch (erro) {
+                trataErro(erro);
+            }
+            finally{
+                console.log(chalk.magenta("Operação concluída"))
+            }
+
         }
-        console.log(chalk.green(texto));
-    })
-}
-        //Exemplo para testar a function "trataErro"
+        pegaArquivo('./arquivos/texto.md');
         pegaArquivo('./arquivos/');
-
-        //forma correta.
-   // pegaArquivo('./arquivos/texto.md');
-
-
-//callback(erro,texto)
